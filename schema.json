@@ -1,0 +1,365 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ENSApi",
+    "description": "ENS resolution and analytics API",
+    "version": "1.1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4334",
+      "description": "Local Development"
+    }
+  ],
+  "paths": {
+    "/api/registrar-actions/{parentNode}": {
+      "get": {
+        "operationId": "getApiRegistrar-actions:parentNode?",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "parentNode",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "orderBy",
+            "schema": {
+              "default": "orderBy[timestamp]=desc",
+              "type": "string",
+              "enum": [
+                "orderBy[timestamp]=desc"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "itemsPerPage",
+            "schema": {}
+          },
+          {
+            "in": "query",
+            "name": "withReferral",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {}
+        }
+      }
+    },
+    "/api/resolve/records/{name}": {
+      "get": {
+        "operationId": "getApiResolveRecords:name",
+        "summary": "Resolve ENS Records",
+        "description": "Resolves ENS records for a given name",
+        "responses": {
+          "200": {
+            "description": "Successfully resolved records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "records": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "addresses": {
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        },
+                        "texts": {
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "accelerationRequested": {
+                      "type": "boolean"
+                    },
+                    "accelerationAttempted": {
+                      "type": "boolean"
+                    },
+                    "trace": {}
+                  },
+                  "required": [
+                    "records",
+                    "accelerationRequested",
+                    "accelerationAttempted"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "addresses",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "texts",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "trace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "accelerate",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/resolve/primary-name/{address}/{chainId}": {
+      "get": {
+        "operationId": "getApiResolvePrimary-name:address:chainId",
+        "summary": "Resolve Primary Name",
+        "description": "Resolves a primary name for a given `address` and `chainId`",
+        "responses": {
+          "200": {
+            "description": "Successfully resolved name",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "accelerationRequested": {
+                      "type": "boolean"
+                    },
+                    "accelerationAttempted": {
+                      "type": "boolean"
+                    },
+                    "trace": {}
+                  },
+                  "required": [
+                    "name",
+                    "accelerationRequested",
+                    "accelerationAttempted"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "address",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "chainId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "trace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "accelerate",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/resolve/primary-names/{address}": {
+      "get": {
+        "operationId": "getApiResolvePrimary-names:address",
+        "summary": "Resolve Primary Names",
+        "description": "Resolves all primary names for a given address across multiple chains",
+        "responses": {
+          "200": {
+            "description": "Successfully resolved records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "names": {
+                      "type": "object",
+                      "propertyNames": {
+                        "type": "number"
+                      },
+                      "additionalProperties": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "accelerationRequested": {
+                      "type": "boolean"
+                    },
+                    "accelerationAttempted": {
+                      "type": "boolean"
+                    },
+                    "trace": {}
+                  },
+                  "required": [
+                    "names",
+                    "accelerationRequested",
+                    "accelerationAttempted"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "address",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "chainIds",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "trace",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "accelerate",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/ensanalytics/referrers": {
+      "get": {
+        "operationId": "getEnsanalyticsReferrers",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            }
+          },
+          {
+            "in": "query",
+            "name": "itemsPerPage",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {}
+        }
+      }
+    }
+  },
+  "components": {}
+}
