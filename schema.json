@@ -56,7 +56,7 @@
       "get": {
         "operationId": "getApiResolveRecords:name",
         "summary": "Resolve ENS Records",
-        "description": "Resolves ENS records for a given name",
+        "description": "Resolves ENS records for a given name, including addresses, text records, and other metadata.\n\n## Query Parameters\n\n- `addresses` - Comma-separated list of coin type IDs (e.g., `60` for ETH, `0` for BTC)\n- `texts` - Comma-separated list of text record keys (e.g., `avatar`, `com.twitter`)\n- `name` - Set to `true` to include name resolution\n- `trace` - Set to `true` to include resolution trace information\n- `accelerate` - Set to `true` to attempt real-time acceleration\n\n## Examples\n\n### Resolve address records (ETH and BTC)\n```\nGET /records/example.eth?addresses=60,0\n```\n\n### Resolve text records (avatar and Twitter)\n```\nGET /records/example.eth?texts=avatar,com.twitter\n```\n\n### Combined resolution\n```\nGET /records/example.eth?name=true&addresses=60,0&texts=avatar,com.twitter\n```",
         "responses": {
           "200": {
             "description": "Successfully resolved records",
